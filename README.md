@@ -94,6 +94,48 @@ colin$write(path = ".")
 This creates a “src/contrib” folder, and copies all the tar.gz into this
 folder.
 
+For a bulk import, you can :
+
+``` r
+colin <- Craneur$new("Colin")
+lapply(list.files("../", pattern = "tar.gz", full.names = TRUE), function(x) colin$add_package(x))
+#> [[1]]
+#> [1] "..//attempt_0.2.1.tar.gz"
+#> 
+#> [[2]]
+#> [1] "..//craneur_0.0.0.9000.tar.gz"
+#> 
+#> [[3]]
+#> [1] "..//devaddins_0.0.0.9000.tar.gz"
+#> 
+#> [[4]]
+#> [1] "..//dockerfiler_0.1.1.tar.gz"
+#> 
+#> [[5]]
+#> [1] "..//fryingpane_0.0.0.9000.tar.gz"
+#> 
+#> [[6]]
+#> [1] "..//jekyllthat_0.0.0.9000.tar.gz"
+#> 
+#> [[7]]
+#> [1] "..//languagelayeR_1.2.3.tar.gz"
+#> 
+#> [[8]]
+#> [1] "..//prenoms_0.1.0.tar.gz"
+#> 
+#> [[9]]
+#> [1] "..//proustr_0.3.0.9000.tar.gz"
+#> 
+#> [[10]]
+#> [1] "..//rgeoapi_1.2.0.tar.gz"
+#> 
+#> [[11]]
+#> [1] "..//rpinterest_0.4.0.tar.gz"
+#> 
+#> [[12]]
+#> [1] "..//tidystringdist_0.1.2.tar.gz"
+```
+
 You can now put the full “src/contrib” folder onto your server.
 
 For example, if I put “src/contrib” at the root of

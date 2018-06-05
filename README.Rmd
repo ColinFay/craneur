@@ -87,6 +87,13 @@ colin$write(path = ".")
 
 This creates a "src/contrib" folder, and copies all the tar.gz into this folder. 
 
+For a bulk import, you can : 
+
+```{r}
+colin <- Craneur$new("Colin")
+lapply(list.files("../", pattern = "tar.gz", full.names = TRUE), function(x) colin$add_package(x))
+```
+
 You can now put the full "src/contrib" folder onto your server. 
 
 For example, if I put "src/contrib" at the root of "https://colinfay.me", here the index: https://colinfay.me/src/contrib/ 
@@ -105,7 +112,6 @@ install.packages("languagelayeR", repos = "https://colinfay.me", type = "source"
 install.packages("fryingpane", repos = "https://colinfay.me", type = "source")
 install.packages("dockerfiler", repos = "https://colinfay.me", type = "source")
 install.packages("devaddins", repos = "https://colinfay.me", type = "source")
-
 ```
 
 ## Personnalise home page
@@ -117,7 +123,6 @@ You can rewrite your index.html by reknitting the index.Rmd you'll find in the d
 See also: 
 
 + `{drat}`: [https://github.com/eddelbuettel/drat](https://github.com/eddelbuettel/drat)
-
 
 ## CoC
 
