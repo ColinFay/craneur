@@ -1,0 +1,19 @@
+Package: craneur
+Title: Create your own R Archive Network
+Version: 0.0.0.9000
+Authors@R: person('Colin', 'Fay', email = 'contact@colinfay.me', role = c('cre', 'aut'))
+Description: Simple Creation of an R Archive Network, to be hosted on a server.
+License: MIT + file LICENSE
+URL: https://github.com/ColinFay/craneur
+BugReports: https://github.com/ColinFay/craneur/issues
+Imports: 
+    attempt,
+    desc,
+    glue,
+    R6,
+    tools
+Suggests: 
+    testthat
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
