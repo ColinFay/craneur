@@ -1,6 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+
 > Disclaimer: this is experimental, use deliberately and with caution.
 
 # craneur
@@ -119,6 +121,12 @@ install.packages("devaddins", repos = "https://colinfay.me", type = "source")
 
 You can rewrite your index.html by reknitting the index.Rmd you’ll find
 in the directory.
+
+## Prior work
+
+See also:
+
+  - `{drat}`: <https://github.com/eddelbuettel/drat>
 
 ## CoC
 

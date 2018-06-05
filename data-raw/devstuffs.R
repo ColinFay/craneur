@@ -12,3 +12,4 @@ usethis::use_package("tools")
 usethis::use_package("glue")
 
 usethis::use_tidy_description()
+usethis::use_lifecycle_badge("experimental")
