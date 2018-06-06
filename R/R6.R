@@ -38,11 +38,10 @@ Craneur <- R6::R6Class("Craneur",
                           self$name <- name
                          },
                          name = character(0),
-                         add_package = function(path, NeedsCompilation = "no"){
+                         add_package = function(path){
                            name <- gsub(".*\\/(.*)_.*", "\\1", path)
                            parsed <- parse_pkg(name, path)
                            self$packages[[parsed$Package]] <- parsed
-                           self$packages[[parsed$Package]][["NeedsCompilation"]] <- NeedsCompilation
                            self$paths[[parsed$Package]] <- path
                          },
                          packages = list(),
@@ -81,7 +80,8 @@ parse_pkg <- function(name, path){
     Depends = greped_desc$get("Depends"),
     Suggests = greped_desc$get("Suggests"),
     License = greped_desc$get("License"),
-    MD5sum = md5sum(path)
+    MD5sum = md5sum(path),
+    NeedsCompilation = if(any(grepl("src", l))) "yes" else "no"
     )
 }
 
