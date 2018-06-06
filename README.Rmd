@@ -60,7 +60,7 @@ install.packages("attempt", repos = "https://colinfay.me", type = "source")
 
 ## Here comes `{craneur}`
 
-`craneur` provides a user-friendly API for creating this skeleton : `PACKAGES` file, tar.gz, and a minimal `index.html`. Note that for now you need to specify if your package needs compilation.
+`craneur` provides a user-friendly API for creating this skeleton : `PACKAGES` file, tar.gz, and a minimal `index.html`.
 
 ```{r}
 library(craneur)
@@ -94,6 +94,8 @@ colin <- Craneur$new("Colin")
 lapply(list.files("../", pattern = "tar.gz", full.names = TRUE), function(x) colin$add_package(x))
 ```
 
+### Put on your sever
+
 You can now put the full "src/contrib" folder onto your server. 
 
 For example, if I put "src/contrib" at the root of "https://colinfay.me", here the index: https://colinfay.me/src/contrib/ 
@@ -123,6 +125,8 @@ You can rewrite your index.html by reknitting the index.Rmd you'll find in the d
 See also: 
 
 + `{drat}`: [https://github.com/eddelbuettel/drat](https://github.com/eddelbuettel/drat)
++ `{cranlike}`: [https://github.com/r-hub/cranlike](https://github.com/r-hub/cranlike)
++ `{packrat}`: [https://github.com/rstudio/packrat](https://github.com/rstudio/packrat)
 
 ## CoC
 

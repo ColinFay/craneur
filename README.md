@@ -53,8 +53,7 @@ install.packages("attempt", repos = "https://colinfay.me", type = "source")
 ## Here comes `{craneur}`
 
 `craneur` provides a user-friendly API for creating this skeleton :
-`PACKAGES` file, tar.gz, and a minimal `index.html`. Note that for now
-you need to specify if your package needs compilation.
+`PACKAGES` file, tar.gz, and a minimal `index.html`.
 
 ``` r
 library(craneur)
@@ -136,6 +135,8 @@ lapply(list.files("../", pattern = "tar.gz", full.names = TRUE), function(x) col
 #> [1] "..//tidystringdist_0.1.2.tar.gz"
 ```
 
+### Put on your sever
+
 You can now put the full “src/contrib” folder onto your server.
 
 For example, if I put “src/contrib” at the root of
@@ -169,6 +170,8 @@ in the directory.
 See also:
 
   - `{drat}`: <https://github.com/eddelbuettel/drat>
+  - `{cranlike}`: <https://github.com/r-hub/cranlike>
+  - `{packrat}`: <https://github.com/rstudio/packrat>
 
 ## CoC
 

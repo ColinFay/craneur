@@ -1,6 +1,0 @@
-Package: prenoms
-Depends: R (>= 2.10)
-Suggests: tibble
-License: MIT + file LICENSE
-Version: 0.1.0
-MD5sum: 8120766d09588a1f01d9ead6dd35d80a
