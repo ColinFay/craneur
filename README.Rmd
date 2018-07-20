@@ -49,7 +49,7 @@ These elements should be put inside a `src/contrib` folder.
 Once you've installed that, you can do : 
 
 ```{r eval=FALSE}
-install.packages("pkg", repos = "my_repos.com", type = "source")
+install.packages("pkg", repos = "../craneur", type = "source")
 ```
 
 For example :
