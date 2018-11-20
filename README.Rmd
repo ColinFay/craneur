@@ -154,6 +154,38 @@ withr::with_options(
 
 ```
 
+## Deploy an app contained in a package
+
+Your package contains an ui.R & server.R in inst/app, and everything else is in a classical package format. 
+
+Run this script from your package root :
+
+```{r}
+where <- devtools::build()
+devtools::install()
+
+withr::with_dir("inst/app",{
+  library(craneur)
+  repo <- Craneur$new("myapp")
+  repo$add_package(where)
+  repo$write()
+  plumb <- to_plumber(from = "src/", to = "plumb")
+  rsconnect::deployAPI( "plumb", launch.browser = FALSE, appName = "apipouetpouet")
+})
+
+# Be sure to catch the output of `rsconnect::deployAPI`
+adress_of_api <- "XXX"
+oldRepos <- getOption("repos")
+
+withr::with_options(
+  list(
+    pkgType = "source",
+    repos = c( adress_of_api, oldRepos)
+  ),
+  rsconnect::deployApp(appDir = "inst/app", appName = "pouetpouet")
+)
+```
+
 
 ## Personnalise home page
 

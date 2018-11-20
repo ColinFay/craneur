@@ -8,13 +8,12 @@
 # craneur
 
 The goal of craneur is to provide an easy way to Create your own “R
-Archive
-Network”.
+Archive Network”, to be deployed anywhere.
 
 ## Install {craneur}
 
 ``` r
-install.packages("craneur", repos = "https://colinfay.me", type = "source")
+remotes::install_github("ColinFay/craneur")
 ```
 
 ## Why would you use `{craneur}`?
@@ -22,6 +21,7 @@ install.packages("craneur", repos = "https://colinfay.me", type = "source")
 Creating your own R archive repository can be useful for:
 
   - Not depending on GitHub for your dev packages
+  - Deploying apps with custom packages on RConnect
   - Internal uses in your company, lab, university…
   - Because you’re a nerd and find it cool
 
@@ -152,6 +152,39 @@ withr::with_options(
     repos = c( adress_of_api, oldRepos)
   ), 
   rsconnect::deployApp(appDir = "inst/app")
+)
+```
+
+## Deploy an app contained in a package
+
+Your package contains an ui.R & server.R in inst/app, and everything
+else is in a classical package format.
+
+Run this script from your package root :
+
+``` r
+where <- devtools::build()
+devtools::install()
+
+withr::with_dir("inst/app",{
+  library(craneur)
+  repo <- Craneur$new("myapp")
+  repo$add_package(where)
+  repo$write()
+  plumb <- to_plumber(from = "src/", to = "plumb")
+  rsconnect::deployAPI( "plumb", launch.browser = FALSE, appName = "apipouetpouet")
+})
+
+# Be sure to catch the output of `rsconnect::deployAPI`
+adress_of_api <- "XXX"
+oldRepos <- getOption("repos")
+
+withr::with_options(
+  list(
+    pkgType = "source",
+    repos = c( adress_of_api, oldRepos)
+  ),
+  rsconnect::deployApp(appDir = "inst/app", appName = "pouetpouet")
 )
 ```
 
