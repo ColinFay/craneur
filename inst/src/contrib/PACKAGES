@@ -1,0 +1,15 @@
+Package: attempt
+Version: 0.3.0.9000
+Imports: rlang
+Suggests: testthat, knitr, rmarkdown
+License: MIT + file LICENSE
+MD5sum: 2a5eda1f97286cf7c7753d3f0f1b3359
+NeedsCompilation: no
+
+Package: shinipsum
+Version: 0.0.0.9000
+Imports: attempt, ggplot2 (>= 3.0.0), magrittr, DT, plotly, dygraphs
+Suggests: testthat
+License: MIT + file LICENSE
+MD5sum: 0342e9a59c2a8d8331ade9b2744c340b
+NeedsCompilation: no

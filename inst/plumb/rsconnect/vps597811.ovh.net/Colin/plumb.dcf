@@ -1,0 +1,10 @@
+name: plumb
+title:
+username: Colin
+account: Colin
+server: vps597811.ovh.net
+hostUrl: http://vps597811.ovh.net:3939/__api__
+appId: 13
+bundleId: 46
+url: http://vps597811.ovh.net:3939/content/13/
+when: 1542748697.5953
