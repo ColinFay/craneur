@@ -40,7 +40,7 @@ These elements should be put inside a `src/contrib` folder.
 Once you’ve installed that, you can do :
 
 ``` r
-install.packages("pkg", repos = "my_repos.com", type = "source")
+install.packages("pkg", repos = "../craneur", type = "source")
 ```
 
 For example
@@ -57,37 +57,16 @@ install.packages("attempt", repos = "https://colinfay.me", type = "source")
 
 ``` r
 library(craneur)
-colin <- craneur:::Craneur$new("Colin")
-colin$add_package(path = "../craneur_0.0.0.9000.tar.gz", name = "craneur")
-colin$add_package(path = "../jekyllthat_0.0.0.9000.tar.gz", name = "jekyllthat")
-colin$add_package(path = "../tidystringdist_0.1.2.tar.gz", name = "tidystringdist")
-colin$add_package(path = "../attempt_0.2.1.tar.gz", name = "attempt")
-colin$add_package(path = "../rpinterest_0.4.0.tar.gz", name = "rpinterest")
-colin$add_package(path = "../rgeoapi_1.2.0.tar.gz", name = "rgeoapi")
-colin$add_package(path = "../proustr_0.3.0.9000.tar.gz", name = "proustr")
-colin$add_package(path = "../languagelayeR_1.2.3.tar.gz", name = "languagelayeR")
-colin$add_package(path = "../fryingpane_0.0.0.9000.tar.gz", name = "fryingpane")
-colin$add_package(path = "../dockerfiler_0.1.1.tar.gz", name = "dockerfiler")
-colin$add_package(path = "../devaddins_0.0.0.9000.tar.gz", name = "devaddins")
+colin <- Craneur$new("Colin")
+colin$add_package("../attempt_0.3.0.9000.tar.gz")
+colin$add_package("../shinipsum_0.0.0.9000.tar.gz")
 colin
-#>           package                            path
-#> 1         craneur    ../craneur_0.0.0.9000.tar.gz
-#> 2      jekyllthat ../jekyllthat_0.0.0.9000.tar.gz
-#> 3  tidystringdist  ../tidystringdist_0.1.2.tar.gz
-#> 4         attempt         ../attempt_0.2.1.tar.gz
-#> 5      rpinterest      ../rpinterest_0.4.0.tar.gz
-#> 6         rgeoapi         ../rgeoapi_1.2.0.tar.gz
-#> 7         proustr    ../proustr_0.3.0.9000.tar.gz
-#> 8   languagelayeR   ../languagelayeR_1.2.3.tar.gz
-#> 9      fryingpane ../fryingpane_0.0.0.9000.tar.gz
-#> 10    dockerfiler     ../dockerfiler_0.1.1.tar.gz
-#> 11      devaddins  ../devaddins_0.0.0.9000.tar.gz
 ```
 
 Create it:
 
 ``` r
-colin$write(path = ".")
+colin$write(path = "inst")
 ```
 
 This creates a “src/contrib” folder, and copies all the tar.gz into this
@@ -98,41 +77,6 @@ For a bulk import, you can :
 ``` r
 colin <- Craneur$new("Colin")
 lapply(list.files("../", pattern = "tar.gz", full.names = TRUE), function(x) colin$add_package(x))
-#> [[1]]
-#> [1] "..//attempt_0.2.1.tar.gz"
-#> 
-#> [[2]]
-#> [1] "..//craneur_0.0.0.9000.tar.gz"
-#> 
-#> [[3]]
-#> [1] "..//devaddins_0.0.0.9000.tar.gz"
-#> 
-#> [[4]]
-#> [1] "..//dockerfiler_0.1.1.tar.gz"
-#> 
-#> [[5]]
-#> [1] "..//fryingpane_0.0.0.9000.tar.gz"
-#> 
-#> [[6]]
-#> [1] "..//jekyllthat_0.0.0.9000.tar.gz"
-#> 
-#> [[7]]
-#> [1] "..//languagelayeR_1.2.3.tar.gz"
-#> 
-#> [[8]]
-#> [1] "..//prenoms_0.1.0.tar.gz"
-#> 
-#> [[9]]
-#> [1] "..//proustr_0.3.0.9000.tar.gz"
-#> 
-#> [[10]]
-#> [1] "..//rgeoapi_1.2.0.tar.gz"
-#> 
-#> [[11]]
-#> [1] "..//rpinterest_0.4.0.tar.gz"
-#> 
-#> [[12]]
-#> [1] "..//tidystringdist_0.1.2.tar.gz"
 ```
 
 ### Put on your sever
@@ -147,17 +91,68 @@ You can now install with
 :
 
 ``` r
-install.packages("craneur", repos = "https://colinfay.me", type = "source")
-install.packages("jekyllthat", repos = "https://colinfay.me", type = "source")
-install.packages("tidystringdist", repos = "https://colinfay.me", type = "source")
 install.packages("attempt", repos = "https://colinfay.me", type = "source")
-install.packages("rpinterest", repos = "https://colinfay.me", type = "source")
-install.packages("rgeoapi", repos = "https://colinfay.me", type = "source")
-install.packages("proustr", repos = "https://colinfay.me", type = "source")
-install.packages("languagelayeR", repos = "https://colinfay.me", type = "source")
-install.packages("fryingpane", repos = "https://colinfay.me", type = "source")
-install.packages("dockerfiler", repos = "https://colinfay.me", type = "source")
-install.packages("devaddins", repos = "https://colinfay.me", type = "source")
+install.packages("shinipsum", repos = "https://colinfay.me", type = "source")
+```
+
+## As a plumber API
+
+The function `to_plumber()` takes a `src` directory, and creates a
+plumber file. Once launched, this plumber API can be used as a RAN.
+
+``` r
+# Suppose you have your src built in inst/src
+to_plumber(from = "inst/src/", to = "inst/plumb")
+oldwd <- setwd("inst/plumb")
+library(plumber)
+p <- plumber$new("plumber.R")
+p$run()
+setwd(oldwd)
+```
+
+If you open a new session, you can go
+do:
+
+``` r
+install.packages("shinipsum", repo = "http://127.0.0.1:6091", type = "source")
+```
+
+Why would you want to do that?
+
+You can deploy this “plumber-ran” on RStudio Connect, or on any other
+server (in a Docker, for example).
+
+This, for example, allows to use a local package for deploying a shiny
+app in RConnect, in two steps:
+
+  - Launch the API:
+
+<!-- end list -->
+
+``` r
+library(craneur)
+colin <- Craneur$new("Colin")
+colin$add_package("../attempt_0.3.0.9000.tar.gz")
+colin$add_package("../shinipsum_0.0.0.9000.tar.gz")
+colin$write()
+to_plumber(from = "inst/src/", to = "inst/plumb")
+rsconnect::deployAPI("inst/plumb")
+```
+
+  - Use the API:
+
+<!-- end list -->
+
+``` r
+# Then, in your app 
+adress_of_api <- "XXX"
+withr::with_options(
+  list(
+    pkgType = "source", 
+    repos = c( adress_of_api, oldRepos)
+  ), 
+  rsconnect::deployApp(appDir = "inst/app")
+)
 ```
 
 ## Personnalise home page

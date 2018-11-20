@@ -7,6 +7,7 @@ output: github_document
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  eval = FALSE,
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%"
@@ -19,12 +20,12 @@ knitr::opts_chunk$set(
 
 # craneur
 
-The goal of craneur is to provide an easy way to Create your own "R Archive Network". 
+The goal of craneur is to provide an easy way to Create your own "R Archive Network", to be deployed anywhere.
 
 ## Install {craneur}
 
 ```{r eval = FALSE}
-install.packages("craneur", repos = "https://colinfay.me", type = "source")
+remotes::install_github("ColinFay/craneur")
 ```
 
 ## Why would you use `{craneur}`?
@@ -32,6 +33,7 @@ install.packages("craneur", repos = "https://colinfay.me", type = "source")
 Creating your own R archive repository can be useful for: 
 
 + Not depending on GitHub for your dev packages 
++ Deploying apps with custom packages on RConnect
 + Internal uses in your company, lab, university... 
 + Because you're a nerd and find it cool
 
@@ -64,25 +66,16 @@ install.packages("attempt", repos = "https://colinfay.me", type = "source")
 
 ```{r}
 library(craneur)
-colin <- craneur:::Craneur$new("Colin")
-colin$add_package(path = "../craneur_0.0.0.9000.tar.gz", name = "craneur")
-colin$add_package(path = "../jekyllthat_0.0.0.9000.tar.gz", name = "jekyllthat")
-colin$add_package(path = "../tidystringdist_0.1.2.tar.gz", name = "tidystringdist")
-colin$add_package(path = "../attempt_0.2.1.tar.gz", name = "attempt")
-colin$add_package(path = "../rpinterest_0.4.0.tar.gz", name = "rpinterest")
-colin$add_package(path = "../rgeoapi_1.2.0.tar.gz", name = "rgeoapi")
-colin$add_package(path = "../proustr_0.3.0.9000.tar.gz", name = "proustr")
-colin$add_package(path = "../languagelayeR_1.2.3.tar.gz", name = "languagelayeR")
-colin$add_package(path = "../fryingpane_0.0.0.9000.tar.gz", name = "fryingpane")
-colin$add_package(path = "../dockerfiler_0.1.1.tar.gz", name = "dockerfiler")
-colin$add_package(path = "../devaddins_0.0.0.9000.tar.gz", name = "devaddins")
+colin <- Craneur$new("Colin")
+colin$add_package("../attempt_0.3.0.9000.tar.gz")
+colin$add_package("../shinipsum_0.0.0.9000.tar.gz")
 colin
 ```
 
 Create it:
 
 ```{r eval = FALSE}
-colin$write(path = ".")
+colin$write(path = "inst")
 ```
 
 This creates a "src/contrib" folder, and copies all the tar.gz into this folder. 
@@ -103,18 +96,64 @@ For example, if I put "src/contrib" at the root of "https://colinfay.me", here t
 You can now install with : 
 
 ```{r eval = FALSE}
-install.packages("craneur", repos = "https://colinfay.me", type = "source")
-install.packages("jekyllthat", repos = "https://colinfay.me", type = "source")
-install.packages("tidystringdist", repos = "https://colinfay.me", type = "source")
 install.packages("attempt", repos = "https://colinfay.me", type = "source")
-install.packages("rpinterest", repos = "https://colinfay.me", type = "source")
-install.packages("rgeoapi", repos = "https://colinfay.me", type = "source")
-install.packages("proustr", repos = "https://colinfay.me", type = "source")
-install.packages("languagelayeR", repos = "https://colinfay.me", type = "source")
-install.packages("fryingpane", repos = "https://colinfay.me", type = "source")
-install.packages("dockerfiler", repos = "https://colinfay.me", type = "source")
-install.packages("devaddins", repos = "https://colinfay.me", type = "source")
+install.packages("shinipsum", repos = "https://colinfay.me", type = "source")
 ```
+
+## As a plumber API 
+
+The function `to_plumber()` takes a `src` directory, and creates a plumber file. Once launched, this plumber API can be used as a RAN. 
+
+```{r}
+# Suppose you have your src built in inst/src
+to_plumber(from = "inst/src/", to = "inst/plumb")
+oldwd <- setwd("inst/plumb")
+library(plumber)
+p <- plumber$new("plumber.R")
+p$run()
+setwd(oldwd)
+```
+
+If you open a new session, you can go do: 
+
+```{r}
+install.packages("shinipsum", repo = "http://127.0.0.1:6091", type = "source")
+```
+
+
+Why would you want to do that? 
+
+You can deploy this "plumber-ran" on RStudio Connect, or on any other server (in a Docker, for example). 
+
+This, for example, allows to use a local package for deploying a shiny app in RConnect, in two steps: 
+
++ Launch the API:
+
+```{r}
+library(craneur)
+colin <- Craneur$new("Colin")
+colin$add_package("../attempt_0.3.0.9000.tar.gz")
+colin$add_package("../shinipsum_0.0.0.9000.tar.gz")
+colin$write()
+to_plumber(from = "inst/src/", to = "inst/plumb")
+rsconnect::deployAPI("inst/plumb")
+```
+
++ Use the API:
+
+```{r}
+# Then, in your app 
+adress_of_api <- "XXX"
+withr::with_options(
+  list(
+    pkgType = "source", 
+    repos = c( adress_of_api, oldRepos)
+  ), 
+  rsconnect::deployApp(appDir = "inst/app")
+)
+
+```
+
 
 ## Personnalise home page
 
