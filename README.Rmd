@@ -169,7 +169,7 @@ withr::with_dir("inst/app",{
   repo <- Craneur$new("myapp")
   repo$add_package(where)
   repo$write()
-  plumb <- to_plumber(from = "src/", to = "plumb")
+  to_plumber(from = "src/", to = "plumb")
   rsconnect::deployAPI( "plumb", launch.browser = FALSE, appName = "apipouetpouet")
 })
 
@@ -180,7 +180,7 @@ oldRepos <- getOption("repos")
 withr::with_options(
   list(
     pkgType = "source",
-    repos = c( adress_of_api, oldRepos)
+    repos = c( PRAN = adress_of_api, oldRepos)
   ),
   rsconnect::deployApp(appDir = "inst/app", appName = "pouetpouet")
 )

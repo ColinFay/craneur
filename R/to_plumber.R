@@ -46,7 +46,7 @@ to_plumber <- function(from, to){
     write_here('}')
     write_here('\n')
   }
-  return(file.path(to, "plumber.R"))
+  return(to)
 }
 
 
