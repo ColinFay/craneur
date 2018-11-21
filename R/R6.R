@@ -50,11 +50,17 @@ Craneur <- R6::R6Class("Craneur",
                            print(data.frame(package = names(self$paths),
                                       path = as.character(self$paths)))
                          },
-                         write = function(path = ".", index = TRUE){
+                         write = function(path = ".",
+                                          index = TRUE,
+                                          redirect = TRUE,
+                                          external_css = NULL){
                            save_packages(name = self$name,
                                          pkg = self$packages,
                                          paths = self$paths,
-                                         path = path)
+                                         path = path,
+                                         build_index = index,
+                                         redirect = redirect,
+                                         external_css = external_css)
                          }
                        ))
 
@@ -96,7 +102,14 @@ build_PACKAGES <- function(list){
   paste(lapply(list, one_package), collapse = "\n\n")
 }
 
-save_packages <- function(name, pkg, paths, path = ".", build_index = TRUE){
+save_packages <- function(name, pkg, paths,
+                          path = ".", build_index = TRUE,
+                          redirect = TRUE, external_css = NULL){
+  if (redirect){
+    idx <- file.path(path, "index.html")
+    file.create(idx)
+    write("<body onload=\"window.location = 'src/contrib/index.html'\">", idx)
+  }
   location <- file.path(normalizePath(path),"src", "contrib")
   dir.create(location, recursive = TRUE, showWarnings = FALSE)
   pkg <- build_PACKAGES(pkg)
@@ -120,7 +133,8 @@ build_index <- function(paths, name, location){
         </head>
         <body>
         <h2>{name} R Archive Network</h2>
-        <p>List of available packages:</p>
+        <b>Last build: {as.character(Sys.time())}<b>
+        <h3>List of available packages:</h3>
         <ul>
         {paste(pkg_list, collapse = "\n")}
         </ul>
