@@ -57,7 +57,7 @@ install.packages("pkg", repos = "../craneur", type = "source")
 For example :
 
 ```{r eval=FALSE}
-install.packages("attempt", repos = "https://colinfay.me", type = "source")
+install.packages("attempt", repos = "http://colinfay.me/ran", type = "source")
 ```
 
 ## Here comes `{craneur}`
