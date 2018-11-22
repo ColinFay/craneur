@@ -142,7 +142,7 @@ build_index <- function(paths, name, location){
         </html>')
   write(html, file.path(location, "index.html"))
 
-  md <- glue('## {name} R Archive Network\n\n__Last build: {as.character(Sys.time())}__ ### List of available packages:\n\n{paste("+ [", paths, "](", paths, ")", collapse = "\n")}')
+  md <- glue('## {name} R Archive Network\n\n__Last build: {as.character(Sys.time())}__\n\n### List of available packages:\n\n{paste("+ [", paths, "](", paths, ")", collapse = "\n")}')
 
   write(md, file.path(location, "index.md"))
 
